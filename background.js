@@ -1,16 +1,24 @@
 var tempDisabled = false;
-var handle;
 
-var doBlock = url => {
+var doBlock = (url, tabId) => {
     if (url.indexOf('http') != 0) {
         return false;
     }
     var domain = /:\/\/([^/]+)/.exec(url)[1];
+    var tab_domain;
+    if (tabUrls[tabId]) {
+        tab_domain = /:\/\/([^/]+)/.exec(tabUrls[tabId])[1];
+    } else {
+        tab_domain = '';
+    }
 
-    var domain_blacklisted = settings.get('blacklist_domains').reduce((prev, cur) => {
-        return prev || domain.endsWith(cur);
-    }, false);
-    if (domain_blacklisted) {
+    var domain_in_list = list_name => {
+        return settings.get(list_name).some(list_domain => {
+            return domain.endsWith(list_domain) || tab_domain.endsWith(list_domain);
+        });
+    }
+
+    if (domain_in_list('blacklist_domains')) {
         return true;
     }
 
@@ -18,10 +26,7 @@ var doBlock = url => {
         return false;
     }
 
-    var domain_whitelisted = settings.get('whitelist_domains').reduce((prev, cur) => {
-        return prev || domain.endsWith(cur);
-    }, false);
-    if (domain_whitelisted) {
+    if (domain_in_list('whitelist_domains')) {
         return false;
     }
 
@@ -53,6 +58,7 @@ var settingsChanged = () => {
 };
 settings.addListener(settingsChanged);
 
+var handle;
 var tempDisable = tabId => {
     handle && clearTimeout(handle);
     if (!tempDisabled) {
@@ -96,7 +102,7 @@ chrome.contextMenus.create({
 
 chrome.webRequest.onBeforeRequest.addListener(
     details => {
-        if (details.url && doBlock(details.url)) {
+        if (details.url && doBlock(details.url, details.tabId)) {
             return {
                 redirectUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=="
             };
@@ -109,10 +115,13 @@ chrome.webRequest.onBeforeRequest.addListener(
     ["blocking"]
 );
 
+var tabUrls = {};
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     var url = changeInfo.url ? changeInfo.url : tab.url;
+    tabUrls[tab.id] = url;
     if (url && doBlock(url)) {
         chrome.tabs.insertCSS(tabId, {code: "img{visibility: hidden !important;}", runAt: "document_start"});	    
     }
 });
 
+chrome.tabs.query({}, tabs => tabs.forEach(tab => tabUrls[tab.id] = tab.url));

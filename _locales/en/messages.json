@@ -1,0 +1,59 @@
+{
+    "ext_name": {
+        "message": "Image Blocker EX+ 9000",
+        "description": "Extension name"
+    },
+    "ext_short_name": {
+        "message": "Image Blocker",
+        "description": "Extension short name"
+    },
+    "ext_description": {
+        "message": "Ridiculously powerful and customizable image blocker",
+        "description": "Extension description"
+    },
+    "action_temp_disable": {
+        "message": "Disable temporarily and reload the current tab",
+        "description": "Context menu item"
+    },
+    "action_perm_disable": {
+        "message": "Disable permanently",
+        "description": "Context menu item"
+    },
+    "opt_enabled": {
+        "message": "Enabled",
+        "description": "Extension enable/disable checkbox label"
+    },
+    "opt_button_action": {
+        "message": "Toolbar Button Action",
+        "description": "Fieldset legend for toolbar button options"
+    },
+    "opt_button_perm_disable": {
+        "message": "Disable Permanently",
+        "description": "Radio button label"
+    },
+    "opt_button_temp_disable": {
+        "message": "Disable Temporarily",
+        "description": "Radio button label"
+    },
+    "opt_button_temp_duration": {
+        "message": "Temporary disable duration, in seconds",
+        "description": "Number input label"
+    },
+    "opt_whitelisted_domains": {
+        "message": "Whitelisted Domains",
+        "description": "Fieldset legend for whitelisted domains"
+    },
+    "opt_blacklisted_domains": {
+        "message": "Blacklisted Domains",
+        "description": "Fieldset legend for blacklisted domains"
+    },
+    "opt_domain_list_add": {
+        "message": "Add",
+        "description": "Button label for domain list"
+    },
+    "opt_domain_list_remove": {
+        "message": "Remove",
+        "description": "Button label for domain list"
+    }
+}
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="imgBlockOptions">
+<head>
+    <style>
+    label {
+        display: block;
+    }
+    </style>
+</head>
+<body ng-controller="OptionsController">
+
+<label>
+    <input type="checkbox" id="enabled" ng-model="enabled" ng-true-value="true" ng-false-value="false">
+    <span i18n-content="opt_enabled"></span>
+</label>
+
+<fieldset>
+    <legend i18n-content="opt_button_action"></legend>
+    <label>
+        <input type="radio" ng-model="click_action" value="permanent">
+        <span i18n-content="opt_button_perm_disable"></span>
+    </label>
+
+    <label>
+        <input type="radio" ng-model="click_action" value="temporary">
+        <span i18n-content="opt_button_temp_disable"></span>
+    </label>
+
+    <label style="padding-top: 5px">
+        <input type="number" ng-disabled="click_action == 'permanent'" ng-model="temporary_duration" min="1" max="999" maxlength="3">
+        <span i18n-content="opt_button_temp_duration"></span>
+    </label>
+</fieldset>
+
+<domain-list title="opt_whitelisted_domains" domains="whitelist_domains">
+</domain-list>
+
+<domain-list title="opt_blacklisted_domains" domains="blacklist_domains">
+</domain-list>
+
+<script src="jquery-2.2.4.min.js"></script>
+<script src="angular.min.js"></script>
+<script src="settings.js"></script>
+<script src="options.js"></script>
+
+</body>
+</html>

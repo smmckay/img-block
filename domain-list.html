@@ -1,0 +1,16 @@
+<fieldset>
+    <legend i18n-content="{{title}}"></legend>
+    <div style="padding-bottom: 5px">
+        <input type="text" ng-model="new_domain">
+        <button style="vertical_align: top" i18n-content="opt_domain_list_add" ng-disabled="!new_domain" ng-click="domains.push(new_domain); new_domain = ''">
+        </button>
+    </div>
+    <select multiple style="width: 100%" ng-model="selected_domains">
+        <option ng-repeat="domain in domains" value="{{domain}}">{{domain}}</option>
+    </select>
+    <div style="padding-top: 5px">
+        <button i18n-content="opt_domain_list_remove" ng-disabled="selected_domains.length == 0"  ng-click="removeSelected()">
+        </button>
+    </div>
+</fieldset>
+

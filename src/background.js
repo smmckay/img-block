@@ -117,6 +117,27 @@ chrome.contextMenus.create({
     onclick: permDisable
 });
 
+chrome.contextMenus.create({
+    type: "separator",
+    contexts: ["all"]
+})
+
+chrome.contextMenus.create({
+    id: "whitelist_domain",
+    title: chrome.i18n.getMessage("action_whitelist_domain"),
+    contexts: ["all"],
+    onclick: (info, tab) => {
+        var domain = /:\/\/([^/]+)/.exec(tab.url)[1];
+        var list = settings.get("whitelist_domains");
+        if (!list.includes(domain)) {
+            list = list.slice();
+            list.push(domain);
+            settings.set("whitelist_domains", list);
+            chrome.tabs.reload(tab.id);
+        }
+    }
+})
+
 chrome.webRequest.onBeforeRequest.addListener(
     details => {
         if (details.url && doBlock(details.url, details.tabId)) {

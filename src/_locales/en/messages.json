@@ -15,6 +15,10 @@
         "message": "Disable temporarily and reload the current tab",
         "description": "Context menu item"
     },
+    "action_whitelist_domain": {
+        "message": "Whitelist this tab's domain",
+        "description": "Context menu item"
+    },
     "action_perm_disable": {
         "message": "Disable permanently",
         "description": "Context menu item"

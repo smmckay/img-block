@@ -33,7 +33,7 @@ var doBlock = (url, tabId) => {
         return settings.get(list_name).some(list_domain => {
             return domain.endsWith(list_domain) || tab_domain.endsWith(list_domain);
         });
-    }
+    };
 
     if (domain_in_list('blacklist_domains')) {
         return true;
@@ -52,20 +52,38 @@ var doBlock = (url, tabId) => {
 
 var updateIcon = () => {
     if (tempDisabled) {
-        chrome.browserAction.setIcon({path: {
-            "19": "images/blocker-temp-disabled-19.png",
-            "38": "images/blocker-temp-disabled-38.png"
-        }});
+        chrome.browserAction.setIcon({
+            path: {
+                "16": "images/blocker-temp-disabled-16.png",
+                "19": "images/blocker-temp-disabled-19.png",
+                "32": "images/blocker-temp-disabled-32.png",
+                "38": "images/blocker-temp-disabled-38.png",
+                "64": "images/blocker-temp-disabled-64.png",
+                "128": "images/blocker-temp-disabled-128.png"
+            }
+        });
     } else if (!settings.get('enabled')) {
-        chrome.browserAction.setIcon({path: {
-            "19": "images/blocker-disabled-19.png",
-            "38": "images/blocker-disabled-38.png"
-        }});
+        chrome.browserAction.setIcon({
+            path: {
+                "16": "images/blocker-disabled-16.png",
+                "19": "images/blocker-disabled-19.png",
+                "32": "images/blocker-disabled-32.png",
+                "38": "images/blocker-disabled-38.png",
+                "64": "images/blocker-disabled-64.png",
+                "128": "images/blocker-disabled-128.png"
+            }
+        });
     } else {
-        chrome.browserAction.setIcon({path: {
-            "19": "images/blocker-19.png",
-            "38": "images/blocker-38.png"
-        }});
+        chrome.browserAction.setIcon({
+            path: {
+                "16": "images/blocker-16.png",
+                "19": "images/blocker-19.png",
+                "32": "images/blocker-32.png",
+                "38": "images/blocker-38.png",
+                "64": "images/blocker-64.png",
+                "128": "images/blocker-128.png"
+            }
+        });
     }
 };
 
@@ -120,7 +138,7 @@ chrome.contextMenus.create({
 chrome.contextMenus.create({
     type: "separator",
     contexts: ["all"]
-})
+});
 
 chrome.contextMenus.create({
     id: "whitelist_domain",
@@ -136,7 +154,7 @@ chrome.contextMenus.create({
             chrome.tabs.reload(tab.id);
         }
     }
-})
+});
 
 chrome.webRequest.onBeforeRequest.addListener(
     details => {

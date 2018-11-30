@@ -40,7 +40,7 @@ var settings = (() => {
 
     var get = (propName) => {
         return knobs[propName];
-    }
+    };
 
     var set = (propName, propValue) => {
         if (!(propName in knobs) || typeof propValue === 'undefined') {
@@ -53,7 +53,7 @@ var settings = (() => {
             save();
             callListeners();
         }
-    }
+    };
 
     chrome.storage.onChanged.addListener(changes => {
         var handleUpdate = propName => {

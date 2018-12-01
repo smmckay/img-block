@@ -1,0 +1,14 @@
+version '1.3'
+
+wrapper {
+    gradleVersion = '5.0'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+task packageAddon(type: Zip) {
+    archiveName = "${project.name}-${project.version}.zip"
+    destinationDir = file(buildDir)
+
+    from 'LICENSE'
+    from 'src'
+}

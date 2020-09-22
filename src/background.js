@@ -153,6 +153,14 @@ chrome.contextMenus.create({
             settings.set("whitelist_domains", list);
             chrome.tabs.reload(tab.id);
         }
+        else { // If the domain is already in the list, remove it
+            list = list.slice();
+            var index = list.indexOf(domain);
+            if (index === -1) { return; } // this is probably redundant...
+            list.splice(index, 1);
+            settings.set("whitelist_domains", list);
+            chrome.tabs.reload(tab.id);
+        }
     }
 });
 

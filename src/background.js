@@ -15,6 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+var currentTabId;
 var tempDisabled = false;
 
 var doBlock = (url, tabId) => {
@@ -51,7 +52,11 @@ var doBlock = (url, tabId) => {
 };
 
 var updateIcon = () => {
-    if (tempDisabled) {
+    var domain = /:\/\/([^/]+)/.exec(tabUrls[currentTabId])[1]; // this line is not original
+    var list = settings.get("whitelist_domains"); // this line is not original
+    // old: if (tempDisabled) {
+    // new: if (tempDisabled || list.indexOf(domain) !== -1) {
+    if (tempDisabled || list.indexOf(domain) !== -1) {
         chrome.browserAction.setIcon({
             path: {
                 "16": "images/blocker-temp-disabled-16.png",
@@ -116,11 +121,28 @@ var permDisable = () => {
 };
 
 chrome.browserAction.onClicked.addListener(tab => {
-    if (settings.get('enabled') && settings.get('click_action') === 'temporary') {
+    /*if (settings.get('enabled') && settings.get('click_action') === 'temporary') {
         tempDisable(tab.id);
     } else {
         permDisable();
+    }*/
+    // Change left-click action from temporarily dissabling to togglign whitelist
+	var domain = /:\/\/([^/]+)/.exec(tab.url)[1];
+    var list = settings.get("whitelist_domains");
+    if (!list.includes(domain)) {
+        list = list.slice();
+        list.push(domain);
+        settings.set("whitelist_domains", list);
+        chrome.tabs.reload(tab.id);
     }
+    else {
+		list = list.slice();
+       	var index = list.indexOf(domain);
+       	if (index === -1) { return; }
+       	list.splice(index, 1);
+        settings.set("whitelist_domains", list);
+        chrome.tabs.reload(tab.id);
+	}
 });
 
 chrome.contextMenus.create({
@@ -153,14 +175,14 @@ chrome.contextMenus.create({
             settings.set("whitelist_domains", list);
             chrome.tabs.reload(tab.id);
         }
-        else { // If the domain is already in the list, remove it
+        else {
             list = list.slice();
             var index = list.indexOf(domain);
-            if (index === -1) { return; } // this is probably redundant...
+            if (index === -1) { return; }
             list.splice(index, 1);
             settings.set("whitelist_domains", list);
             chrome.tabs.reload(tab.id);
-        }
+	}
     }
 });
 
@@ -182,10 +204,12 @@ chrome.webRequest.onBeforeRequest.addListener(
 var tabUrls = {};
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     var url = changeInfo.url ? changeInfo.url : tab.url;
+    currentTabId = tab.id;
     tabUrls[tab.id] = url;
     if (url && doBlock(url)) {
         chrome.tabs.insertCSS(tabId, {code: "img{visibility: hidden !important;}", runAt: "document_start"});	    
     }
+    updateIcon();
 });
 
 chrome.tabs.query({}, tabs => tabs.forEach(tab => tabUrls[tab.id] = tab.url));

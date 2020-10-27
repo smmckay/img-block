@@ -52,6 +52,7 @@ var doBlock = (url, tabId) => {
 };
 
 var updateIcon = () => {
+	if (currentTabId === undefined){ return; } // this happens when the browser is first opened and the event listener that sets currentTabId isn't called
     var domain = /:\/\/([^/]+)/.exec(tabUrls[currentTabId])[1]; // this line is not original
     var list = settings.get("whitelist_domains"); // this line is not original
     // old: if (tempDisabled) {

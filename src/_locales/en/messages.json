@@ -16,7 +16,7 @@
         "description": "Context menu item"
     },
     "action_whitelist_domain": {
-        "message": "Whitelist this tab's domain",
+        "message": "Add/Remove tab from Whitelist",
         "description": "Context menu item"
     },
     "action_perm_disable": {
